@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>色盲视觉模拟器 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="展示网站功能介绍，提供快速开始入口，用户可拖拽或点击上传图片并选择色盲类型后直接开始模拟，同时展示核心功能卡片导航到各子页面"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="色盲视觉模拟器 - 首页"><meta property="og:description" content="展示网站功能介绍，提供快速开始入口，用户可拖拽或点击上传图片并选择色盲类型后直接开始模拟，同时展示核心功能卡片导航到各子页面"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="色盲视觉模拟器 - 首页"><meta name="twitter:description" content="展示网站功能介绍，提供快速开始入口，用户可拖拽或点击上传图片并选择色盲类型后直接开始模拟，同时展示核心功能卡片导航到各子页面"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"色盲视觉模拟器 - 首页","description":"展示网站功能介绍，提供快速开始入口，用户可拖拽或点击上传图片并选择色盲类型后直接开始模拟，同时展示核心功能卡片导航到各子页面","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<sectionclass="section">
+  <h2 class="section-title">色盲视觉模拟器</h2>
+  <div class="section-body">
+    <p>通过上传图片并选择色盲类型，即可在浏览器端实时模拟不同色觉缺陷下的视觉效果。</p>
+  </div>
+</section>
+
+<div class="card" style="text-align:center;">
+  <div class="card-content">
+    <h3>快速开始</h3>
+    <p>将图片拖入此区域或点击上传，选择色盲类型后点击「开始模拟」。</p>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+    <div id="uploadArea" class="btn" style="display:inline-block;padding:12px 24px;border:2px dashed #1a56db;border-radius:8px;cursor:pointer;">
+      点击或拖拽上传图片
+    </div>
+    <select id="typeSelect" style="margin-top:12px;padding:6px;border-radius:4px;">
+      <option value="protanopia">红盲 (Protanopia)</option>
+      <option value="deuteranopia">绿盲 (Deuteranopia)</option>
+      <option value="tritanopia">蓝盲 (Tritanopia)</option>
+      <option value="achromatopsia">全色盲 (Achromatopsia)</option>
+    </select>
+    <button id="simulateBtn" class="btn" style="margin-top:12px;padding:8px 16px;">开始模拟</button>
+  </div>
+</div>
+
+<div class="card" style="margin-top:20px;">
+  <div class="card-content">
+    <h3>模拟结果</h3>
+    <div id="resultContainer" style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <div>
+        <h4>原图</h4>
+        <canvas id="originalCanvas" width="256" height="256" style="border:1px solid #ccc;"></canvas>
+      </div>
+      <div>
+        <h4>模拟图</h4>
+        <canvas id="simulatedCanvas" width="256" height="256" style="border:1px solid #ccc;"></canvas>
+      </div>
+    </div>
+    <p id="resultMsg" style="text-align:center;color:#666;"></p>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title">核心功能</h2>
+  <div class="section-body">
+    <div class="grid">
+      <article class="card">
+        <div class="card-content">
+          <h4>视觉模拟</h4>
+          <p>上传图片选择色盲类型查看模拟效果。</p>
+          <a href="simulator.html?id=sim" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>色觉检测</h4>
+          <p>在线色觉测试，快速了解自己的色觉状况。</p>
+          <a href="detection.html?id=det" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>无障碍优化</h4>
+          <p>提供配色建议和对比度检测，助力设计无障碍。</p>
+          <a href="optimizer.html?id=opt" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>示例图库</h4>
+          <p>查看各类色盲模拟示例图片。</p>
+          <a href="gallery.html?id=gal" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>科普知识</h4>
+          <p>了解色觉异常的成因、类型及日常影响。</p>
+          <a href="knowledge.html?id=know" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>多型对比</h4>
+          <p>同时比较多种色盲类型的模拟效果。</p>
+          <a href="compare.html?id=cmp" class="btn">前往</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-content">
+          <h4>关于</h4>
+          <p>了解项目背景、开发团队及更新日志。</p>
+          <a href="about.html?id=abt" class="btn">前往</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const originalCanvas = document.getElementById('originalCanvas');
+  const simulatedCanvas = document.getElementById('simulatedCanvas');
+  const resultMsg = document.getElementById('resultMsg');
+
+  uploadArea.addEventListener('click', () => fileInput.click());
+  uploadArea.addEventListener('dragover', e => {
+    e.preventDefault();
+    uploadArea.style.background = '#e6f0ff';
+  });
+  uploadArea.addEventListener('dragleave', e => {
+    e.preventDefault();
+    uploadArea.style.background = '';
+  });
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.style.background = '';
+    const dt = e.dataTransfer;
+    if (dt.files.length) handleFile(dt.files[0]);
+  });
+  fileInput.addEventListener('change', e => {
+    if (e.target.files.length) handleFile(e.target.files[0]);
+  });
+
+  function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        drawImageToCanvas(img, originalCanvas);
+        resultMsg.textContent = '';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function drawImageToCanvas(img, canvas) {
+    const ctx = canvas.getContext('2d');
+    const maxSize = 256;
+    let width = img.width;
+    let height = img.height;
+    if (width > height) {
+      if (width > maxSize) {
+        height *= maxSize / width;
+        width = maxSize;
+      }
+    } else {
+      if (height > maxSize) {
+        width *= maxSize / height;
+        height = maxSize;
+      }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, width, height);
+  }
+
+  function simulate() {
+    if (originalCanvas.width === 0 || originalCanvas.height === 0) {
+      alert('请先上传图片');
+      return;
+    }
+    const ctxSrc = originalCanvas.getContext('2d');
+    const imgData = ctxSrc.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+    const data = imgData.data;
+    const type = document.getElementById('typeSelect').value;
+    let matrix;
+    switch (type) {
+      case 'protanopia':
+        matrix = [0.567, 0.433, 0, 0.558, 0.442, 0, 0, 0.242, 0.758];
+        break;
+      case 'deuteranopia':
+        matrix = [0.625, 0.375, 0, 0.7, 0.3, 0, 0, 0.3, 0.7];
+        break;
+      case 'tritanopia':
+        matrix = [0.95, 0.05, 0, 0, 0.433, 0.567, 0, 0.475, 0.525];
+        break;
+      case 'achromatopsia':
+        matrix = [0.299, 0.587, 0.114, 0, 0, 0, 0.299, 0.587, 0.114];
+        break;
+      default:
+        matrix = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+    }
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      data[i] = matrix[0] * r + matrix[1] * g + matrix[2] * b;
+      data[i + 1] = matrix[3] * r + matrix[4] * g + matrix[5] * b;
+      data[i + 2] = matrix[6] * r + matrix[7] * g + matrix[8] * b;
+    }
+    const ctxDst = simulatedCanvas.getContext('2d');
+    simulatedCanvas.width = originalCanvas.width;
+    simulatedCanvas.height = originalCanvas.height;
+    ctxDst.putImageData(imgData, 0, 0);
+    resultMsg.textContent = '模拟完成';
+  }
+
+  document.getElementById('simulateBtn').addEventListener('click', simulate);
+</script>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
