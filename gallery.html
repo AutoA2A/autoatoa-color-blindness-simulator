@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>示例图库 - 预设场景快速体验</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="提供多类别预设示例图片（自然风景、数据图表、UI界面、食物、交通标志等），点击任意图片后自动跳转至模拟页并加载该图，方便用户无需上传即可快速体验不同场景下的色盲视觉差异"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="示例图库 - 预设场景快速体验"><meta property="og:description" content="提供多类别预设示例图片（自然风景、数据图表、UI界面、食物、交通标志等），点击任意图片后自动跳转至模拟页并加载该图，方便用户无需上传即可快速体验不同场景下的色盲视觉差异"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="示例图库 - 预设场景快速体验"><meta name="twitter:description" content="提供多类别预设示例图片（自然风景、数据图表、UI界面、食物、交通标志等），点击任意图片后自动跳转至模拟页并加载该图，方便用户无需上传即可快速体验不同场景下的色盲视觉差异"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"示例图库 - 预设场景快速体验","description":"提供多类别预设示例图片（自然风景、数据图表、UI界面、食物、交通标志等），点击任意图片后自动跳转至模拟页并加载该图，方便用户无需上传即可快速体验不同场景下的色盲视觉差异","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<section class="section">
+    <h2 class="section-title">示例图库 - 预设场景快速体验</h2>
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;">
+        <!-- 自然风景 -->
+        <a href="simulator.html?img=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIGZpbGw9IiNlZGVkZSIvPjxwYXRoIGQ9Ik0wLDYwIGw1MCw1MCIgc3R5bGU9ImZpbGw6I2ZmZjAwMDsiLz48L3N2Zz4=" class="card" style="display:block;padding:0;">
+            <div class="card-content" style="padding:8px;text-align:center;font-size:0.75rem;">自然风景</div>
+        </a>
+        <!-- 数据图表 -->
+        <a href="simulator.html?img=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMCwzMCBMMTAsNDAgMjAsMzAgMzAsNDAgNTAuNSwzMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=" class="card" style="display:block;padding:0;">
+            <div class="card-content" style="padding:8px;text-align:center;font-size:0.75rem;">数据图表</div>
+        </a>
+        <!-- UI界面 -->
+        <a href="simulator.html?img=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMCwzMCBMMTAsNDAgMjAsMzAgMzAsNDAgNTAuNSwzMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=" class="card" style="display:block;padding:0;">
+            <div class="card-content" style="padding:8px;text-align:center;font-size:0.75rem;">UI界面</div>
+        </a>
+        <!-- 食物 -->
+        <a href="simulator.html?img=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMCwzMCBMMTAsNDAgMjAsMzAgMzAsNDAgNTAuNSwzMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=" class="card" style="display:block;padding:0;">
+            <div class="card-content" style="padding:8px;text-align:center;font-size:0.75rem;">食物</div>
+        </a>
+        <!-- 交通标志 -->
+        <a href="simulator.html?img=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMCwzMCBMMTAsNDAgMjAsMzAgMzAsNDAgNTAuNSwzMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=" class="card" style="display:block;padding:0;">
+            <div class="card-content" style="padding:8px;text-align:center;font-size:0.75rem;">交通标志</div>
+        </a>
+    </div>
+</section>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
