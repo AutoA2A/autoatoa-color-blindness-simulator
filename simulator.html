@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视觉模拟 - 实时色盲视觉预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="核心功能页：用户上传图片或选择示例图，左侧显示原图，右侧实时渲染所选色盲类型的模拟视图，支持切换8种色盲类型（红色盲/绿色盲/蓝黄色盲/全色盲等），滑块调节严重程度0-100%，支持分屏对比模式，可下载模拟结果"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="视觉模拟 - 实时色盲视觉预览"><meta property="og:description" content="核心功能页：用户上传图片或选择示例图，左侧显示原图，右侧实时渲染所选色盲类型的模拟视图，支持切换8种色盲类型（红色盲/绿色盲/蓝黄色盲/全色盲等），滑块调节严重程度0-100%，支持分屏对比模式，可下载模拟结果"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="视觉模拟 - 实时色盲视觉预览"><meta name="twitter:description" content="核心功能页：用户上传图片或选择示例图，左侧显示原图，右侧实时渲染所选色盲类型的模拟视图，支持切换8种色盲类型（红色盲/绿色盲/蓝黄色盲/全色盲等），滑块调节严重程度0-100%，支持分屏对比模式，可下载模拟结果"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"视觉模拟 - 实时色盲视觉预览","description":"核心功能页：用户上传图片或选择示例图，左侧显示原图，右侧实时渲染所选色盲类型的模拟视图，支持切换8种色盲类型（红色盲/绿色盲/蓝黄色盲/全色盲等），滑块调节严重程度0-100%，支持分屏对比模式，可下载模拟结果","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<sectionclass="section">
+  <h2 class="section-title">色盲视觉模拟器</h2>
+  <div class="section-body">
+    <article class="card">
+      <div class="card-content">
+        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+          <div>
+            <label for="sourceSelect">图片来源：</label>
+            <select id="sourceSelect" style="margin-left:4px;">
+              <option value="upload">上传图片</option>
+              <option value="example">选择示例图</option>
+            </select>
+          </div>
+          <div id="filePicker" style="margin-left:8px;">
+            <button class="btn" id="fileBtn">选择文件</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          </div>
+          <div id="exampleBox" style="margin-left:8px; display:none;">
+            <label>示例图：</label>
+            <select id="exampleSelect" style="margin-left:4px;"></select>
+          </div>
+          <div style="margin-left:8px;">
+            <label>色盲类型：</label>
+            <select id="typeSelect" style="margin-left:4px;">
+              <option value="protanopia">红色盲 (原型)</option>
+              <option value="deuteranopia">绿色盲 (原型)</option>
+              <option value="tritanopia">蓝黄色盲 (原型)</option>
+              <option value="protanomaly">红色弱</option>
+              <option value="deuteranomaly">绿色弱</option>
+              <option value="tritanomaly">蓝黄色弱</option>
+              <option value="achromatopsia">全色盲</option>
+              <option value="achromatomaly">全色弱</option>
+            </select>
+          </div>
+          <div style="margin-left:8px;">
+            <label>严重度：<span id="severityVal">0</span>%</label><br>
+            <input type="range" id="severitySlider" min="0" max="100" value="0" style="width:150px;">
+          </div>
+          <div style="margin-left:8px;">
+            <button class="btn" id="toggleSplit">开启分屏对比</button>
+          </div>
+          <div style="margin-left:8px;">
+            <button class="btn" id="downloadBtn">下载结果</button>
+          </div>
+        </div>
+        <div style="margin-top:16px; position:relative; width:600px; height:400px;" id="viewer">
+          <canvas id="originalCanvas" style="position:absolute; top:0; left:0; background:#eee;"></canvas>
+          <canvas id="simulatedCanvas" style="position:absolute; top:0; left:0; background:#eee;"></canvas>
+          <div id="splitter" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; background:rgba(255,255,255,0.4);"></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script>
+  const originalCanvas = document.getElementById('originalCanvas');
+  const ctxOriginal = originalCanvas.getContext('2d');
+  const simulatedCanvas = document.getElementById('simulatedCanvas');
+  const ctxSim = simulatedCanvas.getContext('2d');
+  const sourceSelect = document.getElementById('sourceSelect');
+  const fileInput = document.getElementById('fileInput');
+  const fileBtn = document.getElementById('fileBtn');
+  const exampleSelect = document.getElementById('exampleSelect');
+  const exampleBox = document.getElementById('exampleBox');
+  const typeSelect = document.getElementById('typeSelect');
+  const severitySlider = document.getElementById('severitySlider');
+  const severityVal = document.getElementById('severityVal');
+  const toggleSplitBtn = document.getElementById('toggleSplit');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const viewer = document.getElementById('viewer');
+  const splitter = document.getElementById('splitter');
+
+  let imgOriginal = null;
+  let splitEnabled = false;
+  let splitPos = 0; // 0-100, 0 = show simulated only, 100 = show original only
+
+  // Example images (tiny colored squares as base64)
+  const exampleImages = {
+    '红绿色盲测试': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    '蓝黄色盲测试': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+    '全色盲测试': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+  };
+  for (const [name, src] of Object.entries(exampleImages)) {
+    const opt = document.createElement('option');
+    opt.value = src;
+    opt.textContent = name;
+    exampleSelect.appendChild(opt);
+  }
+
+  // UI events
+  sourceSelect.addEventListener('change', () => {
+    if (sourceSelect.value === 'upload') {
+      filePicker.style.display = '';
+      exampleBox.style.display = 'none';
+      fileInput.value = '';
+    } else {
+      filePicker.style.display = 'none';
+      exampleBox.style.display = '';
+    }
+    clearImage();
+  });
+  fileBtn.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    loadImageFromSrc(url);
+  });
+  exampleSelect.addEventListener('change', e => {
+    loadImageFromSrc(e.target.value);
+  });
+  typeSelect.addEventListener('change', updateView);
+  severitySlider.addEventListener('input', e => {
+    severityVal.textContent = e.target.value;
+    updateView();
+  });
+  toggleSplitBtn.addEventListener('click', () => {
+    splitEnabled = !splitEnabled;
+    toggleSplitBtn.textContent = splitEnabled ? '关闭分屏对比' : '开启分屏对比';
+    if (!splitEnabled) {
+      splitPos = 0;
+      splitter.style.clipPath = 'inset(0 0 0 0)'; // hide splitter
+    } else {
+      // show a thin divider for dragging
+      splitter.style.clipPath = 'inset(0 0 0 0)';
+    }
+    updateView();
+  });
+  downloadBtn.addEventListener('click', () => {
+    if (!imgOriginal) return;
+    simulatedCanvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '色盲模拟结果.png';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  });
+
+  // Split interaction (drag on splitter)
+  let dragging = false;
+  splitter.addEventListener('mousedown', e => {
+    if (!splitEnabled) return;
+    dragging = true;
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const rect = viewer.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    splitPos = percent;
+    updateView();
+  });
+  window.addEventListener('mouseup', () => { dragging = false; });
+  window.addEventListener('mouseleave', () => { dragging = false; });
+
+  // Image loading
+  function loadImageFromSrc(src) {
+    clearImage();
+    imgOriginal = new Image();
+    imgOriginal.crossOrigin = "Anonymous";
+    imgOriginal.src = src;
+    imgOriginal.onload = () => {
+      resizeCanvases();
+      drawOriginal();
+    };
+    imgOriginal.onerror = () => {
+      alert('图片加载失败');
+    };
+  }
+
+  function clearImage() {
+    imgOriginal = null;
+    ctxOriginal.clearRect(0,0,originalCanvas.width,originalCanvas.height);
+    ctxSim.clearRect(0,0,simulatedCanvas.width,simulatedCanvas.height);
+    originalCanvas.width = originalCanvas.height = 0;
+    simulatedCanvas.width = simulatedCanvas.height = 0;
+    splitter.style.clipPath = 'inset(0 0 0 0)';
+  }
+
+  function resizeCanvases() {
+    if (!imgOriginal) return;
+    const maxW = 600;
+    const maxH = 400;
+    const scale = Math.min(maxW / imgOriginal.width, maxH / imgOriginal.height, 1);
+    const w = Math.floor(imgOriginal.width * scale);
+    const h = Math.floor(imgOriginal.height * scale);
+    originalCanvas.width = w;
+    originalCanvas.height = h;
+    simulatedCanvas.width = w;
+    simulatedCanvas.height = h;
+    originalCanvas.style.width = w + 'px';
+    originalCanvas.style.height = h + 'px';
+    simulatedCanvas.style.width = w + 'px';
+    simulatedCanvas.style.height = h + 'px';
+    viewer.style.width = w + 'px';
+    viewer.style.height = h + 'px';
+    // reset splitter
+    splitter.style.width = w + 'px';
+    splitter.style.height = h + 'px';
+  }
+
+  function drawOriginal() {
+    ctxOriginal.clearRect(0,0,originalCanvas.width,originalCanvas.height);
+    ctxOriginal.drawImage(imgOriginal,0,0,originalCanvas.width,originalCanvas.height);
+    updateView();
+  }
+
+  // Color blindness simulation matrices (simplified)
+  // RGB -> LMS (using Smith-Pokorny)
+  const rgb2lms = [
+    [0.31399022, 0.63951294, 0.04649755],
+    [0.15537241, 0.75789446, 0.08670142],
+    [0.01775239, 0.10944209, 0.87256922]
+  ];
+  // LMS -> RGB (inverse)
+  const lms2rgb = [
+    [5.47221206, -4.6419601, 0.16963708],
+    [-1.1252419, 2.29317094, -0.1678952],
+    [0.02980165, -0.19317873, 1.16364789]
+  ];
+  // Deficiency matrices (simulate zeroing certain LMS components)
+  const deficiencyMatrices = {
+    protanopia:   [[0, 2.02344, -2.52581], [0, 1, 0], [0, 0, 1]],
+    deuteranopia: [[1, 0, 0], [0.494207, 0, 1.24827], [0, 0, 1]],
+    tritanopia:   [[1, 0, 0], [0, 1, 0], [-0.395913, 0.801109, 0]],
+    protanomaly:  [[0, 0, 0], [0.7, 0.3, 0], [0, 0, 1]], // approximate
+    deuteranomaly:[[1, 0, 0], [0.7, 0.3, 0], [0, 0, 1]],
+    tritanomaly:  [[1, 0, 0], [0, 0.7, 0.3], [0, 0, 1]],
+    achromatopsia:[[0.299, 0.587, 0.114], [0.299, 0.587, 0.114], [0.299, 0.587, 0.114]],
+    achromatomaly:[[0.618, 0.32, 0.062], [0.163, 0.775, 0.062], [0.0, 0.0, 1.0]]
+  };
+
+  function applyColorBlindness(data, type, severity, width, height) {
+    if (severity <= 0) return new Uint8ClampedArray(data);
+    const def = deficiencyMatrices[type];
+    // precompute combined matrix M = lms2rgb * def * rgb2lms
+    const M = [
+      [0,0,0],[0,0,0],[0,0,0]
+    ];
+    // lms2rgb * def
+    const tmp = [
+      [0,0,0],[0,0,0],[0,0,0]
+    ];
+    for (let i=0;i<3;i++) {
+      for (let j=0;j<3;j++) {
+        let sum=0;
+        for (let k=0;k<3;k++) {
+          sum += lms2rgb[i][k] * def[k][j];
+        }
+        tmp[i][j] = sum;
+      }
+    }
+    // tmp * rgb2lms
+    for (let i=0;i<3;i++) {
+      for (let j=0;j<3;j++) {
+        let sum=0;
+        for (let k=0;k<3;k++) {
+          sum += tmp[i][k] * rgb2lms[k][j];
+        }
+        M[i][j] = sum;
+      }
+    }
+    // Apply severity: blend between identity and M
+    const I = [[1,0,0],[0,1,0],[0,0,1]];
+    const Mblend = [
+      [0,0,0],[0,0,0],[0,0,0]
+    ];
+    for (let i=0;i<3;i++) {
+      for (let j=0;j<3;j++) {
+        Mblend[i][j] = I[i][j] * (1-severity) + M[i][j] * severity;
+      }
+    }
+    // Process each pixel
+    const out = new Uint8ClampedArray(data.length);
+    for (let i=0;i<data.length;i+=4) {
+      const r = data[i] / 255;
+      const g = data[i+1] / 255;
+      const b = data[i+2] / 255;
+      // apply matrix
+      const lr = Mblend[0][0]*r + Mblend[0][1]*g + Mblend[0][2]*b;
+      const lg = Mblend[1][0]*r + Mblend[1][1]*g + Mblend[1][2]*b;
+      const lb = Mblend[2][0]*r + Mblend[2][1]*g + Mblend[2][2]*b;
+      // clamp and convert back
+      out[i] = Math.min(255, Math.max(0, Math.round(lr*255)));
+      out[i+1] = Math.min(255, Math.max(0, Math.round(lg*255)));
+      out[i+2] = Math.min(255, Math.max(0, Math.round(lb*255)));
+      out[i+3] = data[i+3]; // alpha unchanged
+    }
+    return out;
+  }
+
+  function updateView() {
+    if (!imgOriginal) return;
+    // draw original (already drawn)
+    // copy original to simulated canvas as base
+    ctxSim.clearRect(0,0,simulatedCanvas.width,simulatedCanvas.height);
+    ctxSim.drawImage(originalCanvas,0,0);
+    // apply simulation
+    const imgData = ctxSim.getImageData(0,0,simulatedCanvas.width,simulatedCanvas.height);
+    const severity = severitySlider.value / 100;
+    const simulated = applyColorBlindness(imgData.data, typeSelect.value, severity, simulatedCanvas.width, simulatedCanvas.height);
+    ctxSim.putImageData(new ImageData(simulated, simulatedCanvas.width, simulatedCanvas.height),0,0);
+    // handle split view
+    if (splitEnabled) {
+      // show both, use clip-path via splitter div
+      originalCanvas.style.clipPath = `inset(0 ${100-splitPos}% 0 0)`; // show left part
+      simulatedCanvas.style.clipPath = `inset(0 0 0 ${splitPos}%)`; // show right part
+      splitter.style.clipPath = 'inset(0 0 0 0)'; // hide divider (optional)
+    } else {
+      // hide original, show simulated full
+      originalCanvas.style.clipPath = 'inset(0 0 0 0)';
+      simulatedCanvas.style.clipPath = 'inset(0 0 0 0)';
+    }
+  }
+</section>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
