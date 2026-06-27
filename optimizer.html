@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无障碍优化 - 图像色觉适配工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="用户上传图片后，自动分析色彩可辨识度问题区域，提供一键优化方案：高对比度增强、色盲友好配色替换、图案纹理叠加、文字标注增强，左右对比显示优化前后效果，可导出优化后图片"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="无障碍优化 - 图像色觉适配工具"><meta property="og:description" content="用户上传图片后，自动分析色彩可辨识度问题区域，提供一键优化方案：高对比度增强、色盲友好配色替换、图案纹理叠加、文字标注增强，左右对比显示优化前后效果，可导出优化后图片"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="无障碍优化 - 图像色觉适配工具"><meta name="twitter:description" content="用户上传图片后，自动分析色彩可辨识度问题区域，提供一键优化方案：高对比度增强、色盲友好配色替换、图案纹理叠加、文字标注增强，左右对比显示优化前后效果，可导出优化后图片"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"无障碍优化 - 图像色觉适配工具","description":"用户上传图片后，自动分析色彩可辨识度问题区域，提供一键优化方案：高对比度增强、色盲友好配色替换、图案纹理叠加、文字标注增强，左右对比显示优化前后效果，可导出优化后图片","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<section class="section">
+  <h2 class="section-title">无障碍优化 - 图像色觉适配工具</h2>
+  <div class="section-body">
+    <div class="card">
+      <div class="card-content">
+        <label for="uploadInput" class="btn">选择图片</label>
+        <input type="file" id="uploadInput" accept="image/*" style="display:none;">
+        <div id="preview" style="margin-top:16px; display:flex; gap:16px; flex-wrap:wrap;">
+          <div>
+            <canvas id="origCanvas" width="256" height="256" style="border:1px solid #ccc;"></canvas>
+            <div style="text-align:center; margin-top:4px;">原图</div>
+          </div>
+          <div>
+            <canvas id="optCanvas" width="256" height="256" style="border:1px solid #ccc;"></canvas>
+            <div style="text-align:center; margin-top:4px;">优化后</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <label class="btn" id="analyzeBtn" style="margin-right:8px;">分析并优化</label>
+          <a id="downloadLink" class="btn" style="display:none;">下载优化图片</a>
+        </div>
+        <div style="margin-top:16px;">
+          <h3 style="margin-bottom:8px;">优化选项</h3>
+          <ul class="list">
+            <li class="list-item"><label><input type="checkbox" id="optContrast" checked> 高对比度增强</label></li>
+            <li class="list-item"><label><input type="checkbox" id="optPalette"> 色盲友好配色替换</label></li>
+            <li class="list-item"><label><input type="checkbox" id="optPattern"> 图案纹理叠加</label></li>
+            <li class="list-item"><label><input type="checkbox" id="optAnnotation"> 文字标注增强</label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.getElementById('uploadInput').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = function(){
+    const origCanvas = document.getElementById('origCanvas');
+    const ctx = origCanvas.getContext('2d');
+    const maxSize = 256;
+    let width = img.width, height = img.height;
+    if (width > height) {
+      if (width > maxSize) { height = Math.round(height * maxSize / width); width = maxSize; }
+    } else {
+      if (height > maxSize) { width = Math.round(width * maxSize / height); height = maxSize; }
+    }
+    origCanvas.width = width; origCanvas.height = height;
+    ctx.drawImage(img,0,0,width,height);
+    const optCanvas = document.getElementById('optCanvas');
+    const optCtx = optCanvas.getContext('2d');
+    optCanvas.width = width; optCanvas.height = height;
+    optCtx.drawImage(img,0,0,width,height);
+  };
+  img.src = URL.createObjectURL(file);
+});
+
+function getImageData(canvas){
+  const ctx = canvas.getContext('2d');
+  return ctx.getImageData(0,0,canvas.width,canvas.height);
+}
+function putImageData(canvas, imagedata){
+  const ctx = canvas.getContext('2d');
+  ctx.putImageData(imagedata,0,0);
+}
+function rgbToLuminance(r,g,b){
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+function process(){
+  const origCanvas = document.getElementById('origCanvas');
+  if (origCanvas.width===0) return alert('请先上传图片');
+  const optCanvas = document.getElementById('optCanvas');
+  const optCtx = optCanvas.getContext('2d');
+  optCtx.drawImage(origCanvas,0,0);
+  let imagedata = optCtx.getImageData(0,0,optCanvas.width,optCanvas.height);
+  const data = imagedata.data;
+  const w = optCanvas.width, h = optCanvas.height;
+  const lowMask = new Uint8ClampedArray(w*h);
+  const threshold = 30;
+  for(let y=1;y<h-1;y++){
+    for(let x=1;x<w-1;x++){
+      const idx = (y*w + x)*4;
+      const lum = rgbToLuminance(data[idx], data[idx+1], data[idx+2]);
+      let sum=0, count=0;
+      for(let dy=-1;dy<=1;dy++){
+        for(let dx=-1;dx<=1;dx++){
+          if(dx===0 && dy===0) continue;
+          const nidx = ((y+dy)*w + (x+dx))*4;
+          const nlum = rgbToLuminance(data[nidx], data[nidx+1], data[nidx+2]);
+          sum += Math.abs(lum - nlum);
+          count++;
+        }
+      }
+      const avg = sum/count;
+      if(avg < threshold) lowMask[y*w + x] = 255;
+    }
+  }
+  const doContrast = document.getElementById('optContrast').checked;
+  const doPalette = document.getElementById('optPalette').checked;
+  const doPattern = document.getElementById('optPattern').checked;
+  const doAnnotation = document.getElementById('optAnnotation').checked;
+  if(doContrast){
+    const hist = new Array(256).fill(0);
+    for(let i=0;i<data.length;i+=4){
+      const lum = rgbToLuminance(data[i], data[i+1], data[i+2]);
+      hist[Math.round(lum)]++;
+    }
+    const sum = w*h;
+    const cdf = new Array(256);
+    let cum=0;
+    for(let i=0;i<256;i++){
+      cum += hist[i];
+      cdf[i] = Math.round((cum/sum)*255);
+    }
+    for(let i=0;i<data.length;i+=4){
+      const lum = rgbToLuminance(data[i], data[i+1], data[i+2]);
+      const newLum = cdf[Math.round(lum)];
+      const factor = lum===0 ? 0 : newLum/lum;
+      data[i] = Math.round(data[i]*factor);
+      data[i+1] = Math.round(data[i+1]*factor);
+      data[i+2] = Math.round(data[i+2]*factor);
+    }
+  }
+  if(doPalette){
+    for(let i=0;i<data.length;i+=4){
+      let r=data[i], g=data[i+1], b=data[i+2];
+      const rSim = 0.567*r + 0.433*g;
+      const gSim = 0.558*g + 0.442*r;
+      const bSim = b;
+      const errR = r - rSim;
+      const errG = g - gSim;
+      const errB = b - bSim;
+      data[i] = Math.min(255, r + 0.8*errR);
+      data[i+1] = Math.min(255, g + 0.8*errG);
+      data[i+2] = Math.min(255, b + 0.8*errB);
+    }
+  }
+  if(doAnnotation){
+    optCtx.strokeStyle = 'rgba(255,0,0,0.8)';
+    optCtx.lineWidth = 2;
+    for(let y=1;y<h-1;y++){
+      for(let x=1;x<w-1;x++){
+        if(lowMask[y*w + x]){
+          optCtx.strokeRect(x-1, y-1, 3, 3);
+        }
+      }
+    }
+  }
+  if(doPattern){
+    const patternCanvas = document.createElement('canvas');
+    patternCanvas.width = w; patternCanvas.height = h;
+    const pctx = patternCanvas.getContext('2d');
+    pctx.clearRect(0,0,w,h);
+    pctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    pctx.lineWidth = 1;
+    for(let i=-h;i<w;i+=20){
+      pctx.beginPath();
+      pctx.moveTo(i>0?0:-i, i>0?i:0);
+      pctx.lineTo(i+w<h?i+w:w, i+w<h?h:h-(i+w-w));
+      pctx.stroke();
+    }
+    optCtx.globalAlpha = 0.8;
+    optCtx.drawImage(patternCanvas,0,0);
+    optCtx.globalAlpha = 1.0;
+  }
+  putImageData(optCanvas, imagedata);
+  document.getElementById('downloadLink').style.display = 'inline-block';
+  document.getElementById('downloadLink').href = optCanvas.toDataURL('image/png');
+  document.getElementById('downloadLink').download = 'optimized.png';
+}
+document.getElementById('analyzeBtn').addEventListener('click', process);
+</script>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
