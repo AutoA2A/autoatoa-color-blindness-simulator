@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科普知识 - 色盲色觉障碍详解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="以交互式图文方式科普：色盲的生物学成因（视锥细胞原理，可交互动画演示）、各类型色盲的特征与流行病学数据、色盲对日常生活的影响、色盲友好设计原则、辅助工具推荐、常见误区澄清"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="科普知识 - 色盲色觉障碍详解"><meta property="og:description" content="以交互式图文方式科普：色盲的生物学成因（视锥细胞原理，可交互动画演示）、各类型色盲的特征与流行病学数据、色盲对日常生活的影响、色盲友好设计原则、辅助工具推荐、常见误区澄清"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="科普知识 - 色盲色觉障碍详解"><meta name="twitter:description" content="以交互式图文方式科普：色盲的生物学成因（视锥细胞原理，可交互动画演示）、各类型色盲的特征与流行病学数据、色盲对日常生活的影响、色盲友好设计原则、辅助工具推荐、常见误区澄清"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"科普知识 - 色盲色觉障碍详解","description":"以交互式图文方式科普：色盲的生物学成因（视锥细胞原理，可交互动画演示）、各类型色盲的特征与流行病学数据、色盲对日常生活的影响、色盲友好设计原则、辅助工具推荐、常见误区澄清","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<sectionclass="section">
+  <h2 class="section-title">色盲的生物学成因</h2>
+  <div class="section-body">
+    <p>
+      人眼的视网膜上有三种视锥细胞，分别对长波（L、红）、中波（M、绿）和短波（S、蓝）光敏感。正常色觉是三种视锥细胞协同工作的结果。当一种或多种视锥细胞功能缺失或异常时，就会导致色盲或色觉异常。
+    </p>
+    <p>下面的交互式演示展示了三种视锥细胞对白光的贡献。点击圆圈可开启/关闭对应视锥，观察混合颜色的变化。</p>
+    <div id="cone-demo" style="width:100%;height:260px;margin:1.5rem 0;display:flex;align-items:center;justify-content:center;">
+      <svg id="cone-svg" width="260" height="200" style="background:#f0f4ff;">
+        <!-- L cone (red) -->
+        <circle id="cone-l" cx="80" cy="100" r="50" fill="rgba(255,0,0,0.6)" cursor="pointer" title="L锥（红）"/>
+        <!-- M cone (green) -->
+        <circle id="cone-m" cx="130" cy="100" r="50" fill="rgba(0,200,0,0.6)" cursor="pointer" title="M锥（绿）"/>
+        <!-- S cone (blue) -->
+        <circle id="cone-s" cx="105" cy="50" r="50" fill="rgba(0,0,255,0.6)" cursor="pointer" title="S锥（蓝）"/>
+        <!-- result circle -->
+        <circle id="cone-result" cx="105" cy="100" r="40" fill="#ffffff" stroke="#1a1a2e" stroke-width="2"/>
+      </svg>
+    </div>
+    <button class="btn" id="cone-reset">重置所有视锥</button>
+    <p><strong>说明：</strong>当所有视锥均激活时，结果圆呈白色（红+绿+蓝加法混合）。关闭任意视锥后，结果颜色会向剩余视锥的方向偏移，这正是对应色盲类型的感知变化。</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">各类型色盲的特征与流行病学数据</h2>
+  <div class="section-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>致病视锥</th>
+          <th>主要表现</th>
+          <th>男性患病率</th>
+          <th>女性患病率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>原色盲（Protanopia）</td><td>L锥缺失</td><td>红色暗淡，难以区分红与绿</td><td>约1.0%</td><td>约0.02%</td></tr>
+        <tr><td>原色弱（Protanomaly）</td><td>L锥异常</td><td>红色感知偏弱</td><td>约1.0%</td><td>约0.02%</td></tr>
+        <tr><td>德特兰色盲（Deuteranopia）</td><td>M锥缺失</td><td>绿色暗淡，红绿混淆</td><td>约1.2%</td><td>约0.01%</td></tr>
+        <tr><td>德特兰色弱（Deuteranomaly）</td><td>M锥异常</td><td>绿色感知偏弱</td><td>约5.0%</td><td>约0.4%</td></tr>
+        <tr><td>三色盲（Tritanopia）</td><td>S锥缺失</td><td>蓝黄分辨困难</td><td>极少（＜0.01%）</td><td>极少（＜0.01%）</td></tr>
+        <tr><td>三色弱（Tritanomaly）</td><td>S锥异常</td><td>蓝黄感知偏弱</td><td>极少</td><td>极少</td></tr>
+        <tr><td>全色盲（Achromatopsia）</td><td>L、M、S均缺失或功能严重不足</td><td>仅见亮度，无色觉</td><td>约0.003%</td><td>约0.003%</td></tr>
+        <tr><td>全色弱（Achromatomaly）</td><td>多种锥细胞轻度异常</td><td>色觉减退但仍有部分色辨</td><td>极少</td><td>极少</td></tr>
+      </tbody>
+    </table>
+    <p>数据来源：WHO、国家眼科流行病学调查（近十年综合）。</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">色盲对日常生活的影响</h2>
+  <div class="section-body">
+    <ul class="list">
+      <li class="list-item">交通信号灯：红绿灯辨识困难，可能导致误判。</li>
+      <li class="list-item">食品选择：成熟度判断（如香蕉、番茄）依赖颜色变化。</li>
+      <li class="list-item">工作场景：电气线路、仪表盘、安全标识等颜色编码信息易被忽视。</li>
+      <li class="list-item">学习与阅读：彩色图表、地图、教材中的颜色标示可能造成信息丢失。</li>
+      <li class="list-item">社交与情感：无法欣赏某些艺术作品的色彩层次，影响审美体验。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">色盲友好设计原则</h2>
+  <div class="section-body">
+    <ul class="list">
+      <li class="list-item">不要仅依赖颜色传达信息，额外添加形状、纹理或文字标签。</li>
+      <li class="list-item">使用对比度较高的颜色组合（如深蓝＋黄、黑＋白），避免红／绿相近的配对。</li>
+      <li class="list-item">在数据可视化中采用色盲安全调色板（如 ColorBrewer 的 “CB” 系列）。</li>
+      <li class="list-item">提供可切换的高对比模式或灰度模式。</li>
+      <li class="list-item">测试时使用色盲模拟工具（如本站的模拟器）检查可辨识度。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">辅助工具推荐</h2>
+  <div class="section-body">
+    <ul class="list">
+      <li class="list-item"><strong>色觉辅助 APP</strong>：通过手机摄像头实时转换颜色，提示色盲用户。</li>
+      <li class="list-item"><strong>电脑色彩滤镜</strong>：Windows/macOS 自带的色彩滤镜或第三方 LUT，可调整显示输出。</li>
+      <li class="list-item"><strong>色盲友好网页插件</strong>：如 Spectrum、Colorblindly，可在网页上实时模拟或转换颜色。</li>
+      <li class="list-item"><strong>标签与纹理贴纸</strong>：在日常物品（药品、清洁剂）上加贴可触摸的标识。</li>
+      <li class="list-item"><strong>教育与培训材料</strong>：使用本站的科普与检测功能提升自我认知。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">常见误区澄清</h2>
+  <div class="section-body">
+    <ul class="list">
+      <li class="list-item"><strong>误区：色盲就是完全看不见颜色。</strong><br>事实：绝大多数色盲者仍能感知颜色，只是对某些波长的辨识能力下降。</li>
+      <li class="list-item"><strong>误区：只有男性会色盲。</strong><br>事实：虽然男性患病率较高，但女性也可能是携带者或患有轻度色弱。</li>
+      <li class="list-item"><strong>误区：色盲不能从事需要颜色判断的职业。</strong><br>事实：许多色盲者通过辅助工具或替代策略成功从事设计、驾驶、医疗等行业。</li>
+      <li class="list-item"><strong>误区：色盲是可以通过训练“治好”的。</strong><br>事实：先天性色盲是遗传导致的光感受器缺陷，后期无法通过训练恢复正常视锥功能。</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  // Cone互动演示
+  const svgns = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('cone-svg');
+  const coneL = document.getElementById('cone-l');
+  const coneM = document.getElementById('cone-m');
+  const coneS = document.getElementById('cone-s');
+  const result = document.getElementById('cone-result');
+
+  function updateResult() {
+    let r = 0, g = 0, b = 0;
+    if (coneL.style.opacity !== '0') r = 255;
+    if (coneM.style.opacity !== '0') g = 200;
+    if (coneS.style.opacity !== '0') b = 255;
+    // 简单加法混合，限制在255
+    r = Math.min(r, 255);
+    g = Math.min(g, 255);
+    b = Math.min(b, 255);
+    result.setAttribute('fill', `rgb(${r},${g},${b})`);
+  }
+
+  function toggleCone(circle) {
+    const cur = circle.style.opacity;
+    circle.style.opacity = (cur === '0' || cur === '') ? '0.6' : '0';
+    updateResult();
+  }
+
+  coneL.addEventListener('click', () => toggleCone(coneL));
+  coneM.addEventListener('click', () => toggleCone(coneM));
+  coneS.addEventListener('click', () => toggleCone(coneS));
+
+  document.getElementById('cone-reset').addEventListener('click', () => {
+    coneL.style.opacity = '0.6';
+    coneM.style.opacity = '0.6';
+    coneS.style.opacity = '0.6';
+    updateResult();
+  });
+
+  // 初始化
+  coneL.style.opacity = '0.6';
+  coneM.style.opacity = '0.6';
+  coneS.style.opacity = '0.6';
+  updateResult();
+</script>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
