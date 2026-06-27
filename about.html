@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - 项目说明与开发者信息</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="介绍项目背景与目的、技术实现说明（Canvas像素处理算法、色彩空间转换矩阵）、使用须知与免责声明、开源协议信息、反馈与联系方式"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="关于 - 项目说明与开发者信息"><meta property="og:description" content="介绍项目背景与目的、技术实现说明（Canvas像素处理算法、色彩空间转换矩阵）、使用须知与免责声明、开源协议信息、反馈与联系方式"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="关于 - 项目说明与开发者信息"><meta name="twitter:description" content="介绍项目背景与目的、技术实现说明（Canvas像素处理算法、色彩空间转换矩阵）、使用须知与免责声明、开源协议信息、反馈与联系方式"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"关于 - 项目说明与开发者信息","description":"介绍项目背景与目的、技术实现说明（Canvas像素处理算法、色彩空间转换矩阵）、使用须知与免责声明、开源协议信息、反馈与联系方式","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<sectionclass="section">
+    <h2 class="section-title">项目背景与目的</h2>
+    <div class="section-body">
+        <p>色盲视觉模拟器是一个完全在浏览器端运行的交互工具，旨在帮助设计师、开发者和普通用户体验不同类型色盲者的视觉感受，提升无障碍设计意识。</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">技术实现说明</h2>
+    <div class="section-body">
+        <p>核心算法基于 HTML5 Canvas 进行逐像素颜色转换。首先将图像像素数据读取为 RGBA 数组，然后依据选定的色盲类型应用对应的色彩空间转换矩阵（如 Brettel、Vienot 等模型），最后将转换后的像素写回 Canvas 并实时渲染。</p>
+        <p>支持的色盲类型包括：原型红色盲（Protanopia）、原型绿色盲（Deuteranopia）、二型红色盲（Protanomaly）、二型绿色盲（Deuteranomaly）、蓝色盲（Tritanopia）、蓝色弱（Tritanomaly）、全色色盲（Achromatopsia）及低亮度全色色盲（Achromatomaly）。</p>
+        <p>所有计算均在客户端完成，无需任何后端服务，确保离线可用且数据不上传。</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">使用须知与免责声明</h2>
+    <div class="section-body">
+        <p>本工具仅用于辅助理解色盲视觉，结果可能与实际个体差异存在。请不要将模拟图像作为医学诊断或法律依据。</p>
+        <p>用户上传的图像仅在本地处理，不会被存储或传输至任何服务器。</p>
+        <p>对于商业用途，请确保所使用图像具有合法权限。</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">开源协议信息</h2>
+    <div class="section-body">
+        <p>本项目采用 MIT 许可证开源，源代码可在 <a href="https://github.com/yourname/colorblind-simulator">GitHub 仓库</a> 获取。欢迎 fork、提交 issue 与 pull request。</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">反馈与联系方式</h2>
+    <div class="section-body">
+        <p>如果您在使用过程中遇到任何问题或有改进建议，欢迎通过以下方式反馈：</p>
+        <ul class="list">
+            <li class="list-item">邮箱：<a href="mailto:feedback@example.com">feedback@example.com</a></li>
+            <li class="list-item">GitHub Issues：<a href="https://github.com/yourname/colorblind-simulator/issues">打开 Issues</a></li>
+            <li class="list-item">Twitter：<a href="https://twitter.com/yourname">@yourname</a></li>
+        </ul>
+        <p>感谢您的支持！</p>
+    </div>
+</section>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
