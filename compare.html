@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多型对比 - 同时查看多种色盲视觉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4ff;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* 顶部导航 */
+        .site-header {
+            background-color: #1a56db;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .main-nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .main-nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* 响应式导航 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #1a56db;
+                flex-direction: column;
+                padding: 8px 16px 16px;
+                gap: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .main-nav.open {
+                display: flex;
+            }
+            
+            .main-nav a {
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+        }
+        
+        /* 主体内容容器 */
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+        }
+    </style>
+<meta name="description" content="用户上传或选择图片后，在一个页面内同时展示原图与6-8种不同色盲类型的模拟结果（网格布局），支持统一严重度调节，方便设计师快速评估图片在不同色盲群体中的辨识度，可导出对比图"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="多型对比 - 同时查看多种色盲视觉"><meta property="og:description" content="用户上传或选择图片后，在一个页面内同时展示原图与6-8种不同色盲类型的模拟结果（网格布局），支持统一严重度调节，方便设计师快速评估图片在不同色盲群体中的辨识度，可导出对比图"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="多型对比 - 同时查看多种色盲视觉"><meta name="twitter:description" content="用户上传或选择图片后，在一个页面内同时展示原图与6-8种不同色盲类型的模拟结果（网格布局），支持统一严重度调节，方便设计师快速评估图片在不同色盲群体中的辨识度，可导出对比图"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"多型对比 - 同时查看多种色盲视觉","description":"用户上传或选择图片后，在一个页面内同时展示原图与6-8种不同色盲类型的模拟结果（网格布局），支持统一严重度调节，方便设计师快速评估图片在不同色盲群体中的辨识度，可导出对比图","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+    <!-- 统一顶部导航 -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">色盲视觉模拟器</a>
+            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="simulator.html">视觉模拟</a>
+                <a href="detection.html">色觉检测</a>
+                <a href="optimizer.html">无障碍优化</a>
+                <a href="gallery.html">示例图库</a>
+                <a href="knowledge.html">科普知识</a>
+                <a href="compare.html">多型对比</a>
+                <a href="about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 主体内容区 -->
+    <main class="page-content">
+        
+<section class="section">
+    <h2 class="section-title">多型对比 - 同时查看多种色盲视觉</h2>
+    <div class="section-body">
+        <div style="margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+            <label class="btn" style="cursor:pointer;">
+                上传图片
+                <input type="file" accept="image/*" id="imgInput" style="display:none;">
+            </label>
+            <button class="btn" id="useSampleBtn">使用示例图片</button>
+            <label style="display:flex;align-items:center;gap:0.5rem;">
+                严重度
+                <input type="range" id="severity" min="0" max="1" step="0.01" value="1" style="width:150px;">
+            </label>
+            <button class="btn" id="exportBtn">导出对比图</button>
+        </div>
+
+        <div id="gridContainer" class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;">
+            <!-- 动态生成的卡片放置区 -->
+        </div>
+    </div>
+</section>
+
+<script>
+// 色盲模拟矩阵（基于 Brettel 等模型）
+const matrices = {
+    normal:      [1,0,0, 0,1,0, 0,0,1],
+    protanopia:  [0.567,0.433,0, 0.558,0.442,0, 0,0.242,0.758],
+    deuteranopia:[0.625,0.375,0, 0.7,0.3,0, 0,0.3,0.7],
+    tritanopia:  [0.95,0.05,0, 0,0.433,0.567, 0,0.475,0.525],
+    protanomaly:[0.817,0.183,0, 0.333,0.667,0, 0,0.125,0.875],
+    deuteranomaly:[0.8,0.2,0, 0.258,0.742,0, 0,0,1],
+    tritanomaly:[0.967,0.033,0, 0,0.733,0.267, 0,0.183,0.817],
+    achromatopsia:[0.299,0.587,0.114, 0.299,0.587,0.114, 0.299,0.587,0.114]
+};
+
+const typeOrder = ['normal','protanopia','deuteranopia','tritanopia','protanomaly','deuteranomaly','tritanomaly','achromatopsia'];
+const typeLabels = {
+    normal:'原图',
+    protanopia:'红色盲 (P)',
+    deuteranopia:'绿色盲 (D)',
+    tritanopia:'蓝色盲 (T)',
+    protanomaly:'红色弱',
+    deuteranomaly:'绿色弱',
+    tritanomaly:'蓝色弱',
+    achromatopsia:'全色盲'
+};
+
+let srcImage = null;
+
+function loadImage(fileOrUrl){
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = ()=>{ srcImage = img; renderAll(); };
+    if (fileOrUrl instanceof File){
+        const reader = new FileReader();
+        reader.onload = e=>{ img.src = e.target.result; };
+        reader.readAsDataURL(fileOrUrl);
+    }else{
+        img.src = fileOrUrl;
+    }
+}
+
+function applyMatrix(imgData, matrix, severity){
+    const data = imgData.data;
+    for(let i=0;i<data.length;i+=4){
+        const r=data[i], g=data[i+1], b=data[i+2];
+        const nr = matrix[0]*r + matrix[1]*g + matrix[2]*b;
+        const ng = matrix[3]*r + matrix[4]*g + matrix[5]*b;
+        const nb = matrix[6]*r + matrix[7]*g + matrix[8]*b;
+        // 线性混合原始与模拟
+        data[i]   = r*(1-severity) + nr*severity;
+        data[i+1] = g*(1-severity) + ng*severity;
+        data[i+2] = b*(1-severity) + nb*severity;
+    }
+    return imgData;
+}
+
+function renderAll(){
+    const container = document.getElementById('gridContainer');
+    container.innerHTML = '';
+    if(!srcImage) return;
+    typeOrder.forEach(type=>{
+        const card = document.createElement('article');
+        card.className='card';
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const w = srcImage.width;
+        const h = srcImage.height;
+        // 限制显示尺寸
+        const maxDim = 300;
+        const scale = Math.min(1, maxDim/Math.max(w,h));
+        canvas.width = w*scale;
+        canvas.height = h*scale;
+        ctx.drawImage(srcImage,0,0,canvas.width,canvas.height);
+        const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+        const severity = parseFloat(document.getElementById('severity').value);
+        if(type!=='normal'){
+            applyMatrix(imgData, matrices[type], severity);
+            ctx.putImageData(imgData,0,0);
+        }
+        const caption = document.createElement('figcaption');
+        caption.textContent = typeLabels[type];
+        const figure = document.createElement('figure');
+        figure.className='media';
+        figure.appendChild(canvas);
+        figure.appendChild(caption);
+        const content = document.createElement('div');
+        content.className='card-content';
+        content.appendChild(figure);
+        card.appendChild(content);
+        container.appendChild(card);
+    });
+}
+
+// 事件绑定
+document.getElementById('imgInput').addEventListener('change', e=>{
+    if(e.target.files[0]) loadImage(e.target.files[0]);
+});
+document.getElementById('severity').addEventListener('input', renderAll);
+document.getElementById('useSampleBtn').addEventListener('click', ()=>{
+    // 示例使用 data URI 的简易彩色方块
+    const sample = 'data:image/svg+xml;base64,'+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="url(#grad)"/><defs><linearGradient id="grad"><stop offset="0%" stop-color="#ff0000"/><stop offset="33%" stop-color="#00ff00"/><stop offset="66%" stop-color="#0000ff"/><stop offset="100%" stop-color="#ffff00"/></linearGradient></defs></svg>');
+    loadImage(sample);
+});
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+    if(!srcImage) return;
+    const cols = 4; // 4 列布局
+    const rows = Math.ceil(typeOrder.length/cols);
+    const cellSize = 300;
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = cols*cellSize;
+    exportCanvas.height = rows*cellSize;
+    const eCtx = exportCanvas.getContext('2d');
+    const tempCanvases = [];
+    // 先渲染每种到临时 canvas
+    typeOrder.forEach((type,i)=>{
+        const tmp = document.createElement('canvas');
+        const ctx = tmp.getContext('2d');
+        const w = srcImage.width;
+        const h = srcImage.height;
+        const scale = Math.min(1, cellSize/Math.max(w,h));
+        tmp.width = w*scale;
+        tmp.height = h*scale;
+        ctx.drawImage(srcImage,0,0,tmp.width,tmp.height);
+        const imgData = ctx.getImageData(0,0,tmp.width,tmp.height);
+        const severity = parseFloat(document.getElementById('severity').value);
+        if(type!=='normal'){
+            applyMatrix(imgData, matrices[type], severity);
+            ctx.putImageData(imgData,0,0);
+        }
+        // 绘制标签
+        ctx.fillStyle='rgba(0,0,0,0.6)';
+        ctx.fillRect(0,tmp.height-24,tmp.width,24);
+        ctx.fillStyle='#fff';
+        ctx.font='14px system-ui';
+        ctx.textBaseline='middle';
+        ctx.fillText(typeLabels[type],8,tmp.height-12);
+        tempCanvases.push(tmp);
+    });
+    // 合并
+    tempCanvases.forEach((c,i)=>{
+        const x = (i%cols)*cellSize;
+        const y = Math.floor(i/cols)*cellSize;
+        eCtx.drawImage(c, x, y);
+    });
+    // 下载
+    const link = document.createElement('a');
+    link.href = exportCanvas.toDataURL('image/png');
+    link.download = 'compare.png';
+    link.click();
+});
+</script>
+
+    </main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
