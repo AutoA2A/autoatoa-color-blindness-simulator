@@ -1,480 +1,362 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>色觉检测 - 色盲筛查小游戏</title>
     <style>
-        * {
+        body {
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: #f0f4ff;
-            color: #1a1a2e;
+            background-color: #f9f9f9;
             line-height: 1.6;
-            min-height: 100vh;
         }
-        
-        a {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        nav {
+            background-color: #3498db;
+            color: #fff;
+            padding: 8px 16px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin-right: 16px;
+        }
+        nav a {
+            color: #fff;
             text-decoration: none;
-            color: inherit;
         }
-        
-        /* 顶部导航 */
-        .site-header {
-            background-color: #1a56db;
-            color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        nav a:hover {
+            color: #f1c40f;
         }
-        
-        .header-inner {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
+        header {
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 16px;
+            text-align: center;
         }
-        
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            white-space: nowrap;
-        }
-        
-        .main-nav {
-            display: flex;
-            gap: 4px;
-        }
-        
-        .main-nav a {
-            display: block;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-            white-space: nowrap;
-        }
-        
-        .main-nav a:hover {
-            background-color: rgba(255,255,255,0.15);
-        }
-        
-        .main-nav a.active {
-            background-color: rgba(255,255,255,0.2);
-        }
-        
-        /* 移动端菜单按钮 */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 4px;
-        }
-        
-        /* 响应式导航 */
         @media (max-width: 768px) {
-            .menu-toggle {
+            nav ul li {
                 display: block;
-            }
-            
-            .main-nav {
-                display: none;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                right: 0;
-                background-color: #1a56db;
-                flex-direction: column;
-                padding: 8px 16px 16px;
-                gap: 2px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            }
-            
-            .main-nav.open {
-                display: flex;
-            }
-            
-            .main-nav a {
-                padding: 12px 16px;
-                border-radius: 8px;
-            }
-        }
-        
-        /* 主体内容容器 */
-        .page-content {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 24px 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .page-content {
-                padding: 16px;
+                margin-right: 0;
+                padding: 8px 0;
             }
         }
     </style>
-<meta name="description" content="提供多轮色觉检测：石原氏色盲检测图（用户识别隐藏数字/图案）、色相排列测试（将色块按渐变顺序排列）、颜色匹配测试，实时计分并给出检测结果和建议"><meta name="keywords" content="色盲,色觉异常,视觉模拟,红绿色盲,蓝黄色盲,全色盲,图像处理,无障碍设计"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="色觉检测 - 色盲筛查小游戏"><meta property="og:description" content="提供多轮色觉检测：石原氏色盲检测图（用户识别隐藏数字/图案）、色相排列测试（将色块按渐变顺序排列）、颜色匹配测试，实时计分并给出检测结果和建议"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="色觉检测 - 色盲筛查小游戏"><meta name="twitter:description" content="提供多轮色觉检测：石原氏色盲检测图（用户识别隐藏数字/图案）、色相排列测试（将色块按渐变顺序排列）、颜色匹配测试，实时计分并给出检测结果和建议"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"色觉检测 - 色盲筛查小游戏","description":"提供多轮色觉检测：石原氏色盲检测图（用户识别隐藏数字/图案）、色相排列测试（将色块按渐变顺序排列）、颜色匹配测试，实时计分并给出检测结果和建议","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<meta name="description" content="提供多轮色觉检测，包括石原氏色盲检测图、色相排列测试、颜色匹配测试，实时计分并给出检测结果和建议，新增检测报告分享功能"><meta name="keywords" content="色盲模拟,色觉检测,无障碍优化,色盲友好设计,视觉障碍辅助工具"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="色觉检测 - 色盲筛查小游戏"><meta property="og:description" content="提供多轮色觉检测，包括石原氏色盲检测图、色相排列测试、颜色匹配测试，实时计分并给出检测结果和建议，新增检测报告分享功能"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="色觉检测 - 色盲筛查小游戏"><meta name="twitter:description" content="提供多轮色觉检测，包括石原氏色盲检测图、色相排列测试、颜色匹配测试，实时计分并给出检测结果和建议，新增检测报告分享功能"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"色觉检测 - 色盲筛查小游戏","description":"提供多轮色觉检测，包括石原氏色盲检测图、色相排列测试、颜色匹配测试，实时计分并给出检测结果和建议，新增检测报告分享功能","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
 <body>
-    <!-- 统一顶部导航 -->
-    <header class="site-header">
-        <div class="header-inner">
-            <a href="index.html" class="logo">色盲视觉模拟器</a>
-            <button class="menu-toggle" onclick="document.querySelector('.main-nav').classList.toggle('open')" aria-label="菜单">☰</button>
-            <nav class="main-nav">
-                <a href="index.html" class="active">首页</a>
-                <a href="simulator.html">视觉模拟</a>
-                <a href="detection.html">色觉检测</a>
-                <a href="optimizer.html">无障碍优化</a>
-                <a href="gallery.html">示例图库</a>
-                <a href="knowledge.html">科普知识</a>
-                <a href="compare.html">多型对比</a>
-                <a href="about.html">关于</a>
-            </nav>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="simulator.html">视觉模拟</a></li>
+                <li><a href="detection.html">色觉检测</a></li>
+                <li><a href="optimizer.html">无障碍优化</a></li>
+                <li><a href="knowledge.html">科普知识</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>色盲视觉模拟器</h1>
         </div>
     </header>
-    
-    <!-- 主体内容区 -->
-    <main class="page-content">
-        
-<sectionclass="section">
-  <h2 class="section-title">色觉检测</h2>
-  <div class="section-body">
-    <div id="tests">
-      <!-- 石原氏色盲检测图 -->
-      <article class="card">
-        <div class="card-content">
-          <h3>石原氏色盲检测图</h3>
-          <div id="ishihara-container"></div>
-          <p>你看到的数字是：<input type="text" id="ishihara-answer" maxlength="2"></p>
-          <button class="btn" id="ishihara-check">检查答案</button>
-          <p id="ishihara-feedback"></p>
-        </div>
-      </article>
+    <main>
+        <div class="container">
+            
+<section class="container"><h2 style="margin-top:0;">色觉检测小游戏</h2><p>完成三轮测试，获取总分和建议。</p><div id="score" style="font-size:1.2rem;margin:12px 0;">当前得分：0</div></section>
 
-      <!-- 色相排列测试 -->
-      <article class="card">
-        <div class="card-content">
-          <h3>色相排列测试</h3>
-          <div id="hue-sortable" class="grid"></div>
-          <button class="btn" id="hue-check">提交排序</button>
-          <p id="hue-feedback"></p>
-        </div>
-      </article>
+<article class="container" style="background-color:#fff;padding:16px;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.1);"><h2>① 色辨别测试（石原氏色盲检测图）</h2>
+<canvas id="ishiharaCanvas" width="200" height="200" style="display:block;margin:12px auto;background:#fff;"></canvas>
+<div style="margin-top:12px;text-align:center;">
+<button id="ishiharaCheck" style="background-color:#3498db;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:8px;cursor:pointer;">检查</button>
+</div>
+<p id="ishiharaFeedback" style="margin-top:12px;color:#555;"></p>
+</article>
 
-      <!-- 颜色匹配测试 -->
-      <article class="card">
-        <div class="card-content">
-          <h3>颜色匹配测试</h3>
-          <div id="match-target" class="media"><div id="target-color" style="width:100px;height:100px;border:2px solid #555;"></div></div>
-          <div id="match-palette" class="grid"></div>
-          <p>点击最接近目标颜色的色块</p>
-          <button class="btn" id="match-check">检查匹配</button>
-          <p id="match-feedback"></p>
-        </div>
-      </article>
+<article class="container" style="background-color:#fff;padding:16px;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.1);"><h2>② 色相排列测试</h2>
+<p>将下面的色块拖拽至从左到右的颜色渐变顺序。</p>
+<div id="hueContainer" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;"></div>
+<button id="hueCheck" style="background-color:#3498db;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:8px;cursor:pointer;">检查顺序</button>
+<p id="hueFeedback" style="margin-top:12px;color:#555;"></p>
+</article>
 
-      <button class="btn" id="finish-test">完成检测并查看结果</button>
-      <div id="result" class="card" style="display:none;">
-        <div class="card-content">
-          <h3>检测结果</h3>
-          <p id="result-text"></p>
-        </div>
-      </div>
-    </div>
-  </div>
+<article class="container" style="background-color:#fff;padding:16px;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.1);"><h2>③ 颜色匹配测试</h2>
+<p>选择与左侧颜色最相近的右侧颜色。</p>
+<div style="display:flex;justify-content:center;gap:24px;margin-top:12px;align-items:center;">
+<div id="matchTarget" style="width:80px;height:80px;border:2px solid #333;"></div>
+<div id="matchOptions" style="display:flex;gap:8px;"></div>
+</div>
+<button id="matchCheck" style="background-color:#3498db;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:8px;cursor:pointer;">提交答案</button>
+<p id="matchFeedback" style="margin-top:12px;color:#555;"></p>
+</article>
+
+<section class="container" id="resultSection" style="display:none;"><h2>检测结果</h2><p id="resultText"></p>
+<button id="shareBtn" style="background-color:#3498db;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:8px;cursor:pointer;">分享报告</button>
 </section>
 
 <script>
-  // ---------- Ishihara Test ----------
-  const ishiharaContainer = document.getElementById('ishihara-container');
-  const ishiharaAnswer = document.getElementById('ishihara-answer');
-  const ishiharaCheck = document.getElementById('ishihara-check');
-  const ishiharaFeedback = document.getElementById('ishihara-feedback');
-  let ishiharaCorrect = false;
+(function(){
+    const scoreEl = document.getElementById('score');
+    let score = 0;
+    const maxScore = 3;
+    function updateScore(){ scoreEl.textContent = `当前得分：${score}`; }
 
-  // Simple Ishihara-like plate: number 74 on a noisy background
-  function drawIshihara() {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '250');
-    svg.setAttribute('height', '250');
-    svg.setAttribute('style', 'border:1px solid #ccc;background:#fafafa;');
-    // Background dots
-    for (let i = 0; i < 500; i++) {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      const r = 4 + Math.random() * 3;
-      const cx = Math.random() * 250;
-      const cy = Math.random() * 250;
-      // random background color (mostly red/green confusion colors)
-      const rnd = Math.random();
-      let color;
-      if (rnd < 0.33) color = 'rgb(220,50,50)'; // red-ish
-      else if (rnd < 0.66) color = 'rgb(50,180,50)'; // green-ish
-      else color = 'rgb(180,180,180)'; // gray
-      circle.setAttribute('cx', cx);
-      circle.setAttribute('cy', cy);
-      circle.setAttribute('r', r);
-      circle.setAttribute('fill', color);
-      svg.appendChild(circle);
+    // ---------- 色辨别测试 ----------
+    const ishCanvas = document.getElementById('ishiharaCanvas');
+    const ishCtx = ishCanvas.getContext('2d');
+    let ishTarget = null; // {x,y,r}
+    function hueToRgb(h){ // h in [0,360)
+        h = h/60;
+        const c = 1; // chroma
+        const x = c*(1 - Math.abs((h%2)-1));
+        let r1,g1,b1;
+        if(h<1){r1=c;g1=x;b1=0;}
+        else if(h<2){r1=x;g1=c;b1=0;}
+        else if(h<3){r1=0;g1=c;b1=x;}
+        else if(h<4){r1=0;g1=x;b1=c;}
+        else if(h<5){r1=x;g1=0;b1=c;}
+        else{r1=c;g1=0;b1=x;}
+        const m = 0.5 - 0.5; // lightness 0.5 => m = 0.5 - c/2 = 0
+        return [Math.round((r1+m)*255), Math.round((g1+m)*255), Math.round((b1+m)*255)];
     }
-    // Number 74 in a color visible to normal vision (dark blue)
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('x', '50%');
-    text.setAttribute('y', '55%');
-    text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('font-size', '48');
-    text.setAttribute('fill', '#003366');
-    text.setAttribute('font-family', 'sans-serif');
-    text.setAttribute('font-weight', 'bold');
-    text.textContent = '74';
-    svg.appendChild(text);
-    ishiharaContainer.innerHTML = '';
-    ishiharaContainer.appendChild(svg);
-  }
-  drawIshihara();
-
-  ishiharaCheck.addEventListener('click', () => {
-    const ans = ishiharaAnswer.value.trim();
-    if (ans === '74') {
-      ishiharaFeedback.textContent = '正确！';
-      ishiharaFeedback.style.color = 'green';
-      ishiharaCorrect = true;
-    } else {
-      ishiharaFeedback.textContent = '错误，请再看一次。';
-      ishiharaFeedback.style.color = 'red';
-      ishiharaCorrect = false;
-    }
-  });
-
-  // ---------- Hue Arrangement Test ----------
-  const hueSortable = document.getElementById('hue-sortable');
-  const hueCheck = document.getElementById('hue-check');
-  const hueFeedback = document.getElementById('hue-feedback');
-  let hueCorrect = false;
-  const hueItems = [];
-
-  function createHueItems() {
-    hueSortable.innerHTML = '';
-    hueItems.length = 0;
-    const count = 10;
-    for (let i = 0; i < count; i++) {
-      const hue = Math.floor((i / count) * 360);
-      const color = `hsl(${hue}, 80%, 50%)`;
-      const div = document.createElement('div');
-      div.className = 'grid-item';
-      div.style.backgroundColor = color;
-      div.dataset.hue = hue;
-      div.draggable = true;
-      div.style.cursor = 'move';
-      div.style.border = '2px solid #ccc';
-      div.style.borderRadius = '4px';
-      div.style.width = '60px';
-      div.style.height = '60px';
-      div.style.display = 'flex';
-      div.style.alignItems = 'center';
-      div.style.justifyContent = 'center';
-      div.style.color = '#fff';
-      div.style.fontSize = '0.8rem';
-      div.textContent = `${hue}°`;
-      hueSortable.appendChild(div);
-      hueItems.push(div);
-    }
-    addDragListeners();
-  }
-  function addDragListeners() {
-    const items = hueSortable.querySelectorAll('.grid-item');
-    items.forEach(item => {
-      item.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', item.dataset.hue);
-        item.classList.add('dragging');
-      });
-      item.addEventListener('dragend', () => {
-        item.classList.remove('dragging');
-      });
-      item.addEventListener('dragover', e => e.preventDefault());
-      item.addEventListener('drop', e => {
-        e.preventDefault();
-        const draggedHue = e.dataTransfer.getData('text/plain');
-        const draggedItem = [...items].find(it => it.dataset.hue === draggedHue);
-        const targetItem = item;
-        if (draggedItem && targetItem && draggedItem !== targetItem) {
-          const draggedIndex = [...items].indexOf(draggedItem);
-          const targetIndex = [...items].indexOf(targetItem);
-          hueSortable.insertBefore(draggedItem, targetIndex > draggedIndex ? targetItem.nextSibling : targetItem);
+    function drawIshihara(){
+        ishCtx.clearRect(0,0,ishCanvas.width,ishCanvas.height);
+        const baseH = Math.random()*360;
+        const baseRgb = hueToRgb(baseH);
+        // draw noise dots
+        for(let i=0;i<2000;i++){
+            const x = Math.random()*ishCanvas.width;
+            const y = Math.random()*ishCanvas.height;
+            const r = 1+Math.random()*2;
+            const shift = (Math.random()-0.5)*20; // hue shift small
+            const dotH = ((baseH+shift)%360+360)%360;
+            const dotRgb = hueToRgb(dotH);
+            ishCtx.fillStyle = `rgb(${dotRgb[0]},${dotRgb[1]},${dotRgb[2]})`;
+            ishCtx.beginPath();
+            ishCtx.arc(x,y,r,0,Math.PI*2);
+            ishCtx.fill();
         }
-      });
-    });
-  }
-  createHueItems();
-
-  hueCheck.addEventListener('click', () => {
-    const items = hueSortable.querySelectorAll('.grid-item');
-    let ordered = true;
-    let prevHue = -1;
-    items.forEach(item => {
-      const hue = parseInt(item.dataset.hue, 10);
-      if (hue < prevHue) ordered = false;
-      prevHue = hue;
-    });
-    if (ordered) {
-      hueFeedback.textContent = '排序正确！';
-      hueFeedback.style.color = 'green';
-      hueCorrect = true;
-    } else {
-      hueFeedback.textContent = '排序有误，请按色相从小到大排列。';
-      hueFeedback.style.color = 'red';
-      hueCorrect = false;
+        // target circle with hue shift +30
+        const targetH = (baseH+30)%360;
+        const targetRgb = hueToRgb(targetH);
+        ishTarget = {
+            x: 50+Math.random()*100,
+            y: 50+Math.random()*100,
+            r: 20
+        };
+        ishCtx.fillStyle = `rgb(${targetRgb[0]},${targetRgb[1]},${targetRgb[2]})`;
+        ishCtx.beginPath();
+        ishCtx.arc(ishTarget.x, ishTarget.y, ishTarget.r, 0, Math.PI*2);
+        ishCtx.fill();
     }
-  });
-
-  // ---------- Color Matching Test ----------
-  const matchTarget = document.getElementById('match-target');
-  const targetColorDiv = document.getElementById('target-color');
-  const matchPalette = document.getElementById('match-palette');
-  const matchCheck = document.getElementById('match-check');
-  const matchFeedback = document.getElementById('match-feedback');
-  let matchCorrect = false;
-  let targetRGB = {r:0,g:0,b:0};
-  let paletteRGBs = [];
-
-  function randomColor() {
-    return {
-      r: Math.floor(Math.random()*200)+20,
-      g: Math.floor(Math.random()*200)+20,
-      b: Math.floor(Math.random()*200)+20
-    };
-  }
-  function rgbToString({r,g,b}) {
-    return `rgb(${r},${g},${b})`;
-  }
-  function colorDistance(c1,c2) {
-    return Math.sqrt(
-      Math.pow(c1.r-c2.r,2)+
-      Math.pow(c1.g-c2.g,2)+
-      Math.pow(c1.b-c2.b,2)
-    );
-  }
-  function loadMatchTest() {
-    targetRGB = randomColor();
-    targetColorDiv.style.backgroundColor = rgbToString(targetRGB);
-    // generate palette: one close color, others far
-    paletteRGBs = [];
-    // close color (within 30 distance)
-    const close = {
-      r: Math.max(0, Math.min(255, targetRGB.r + Math.floor(Math.random()*60)-30)),
-      g: Math.max(0, Math.min(255, targetRGB.g + Math.floor(Math.random()*60)-30)),
-      b: Math.max(0, Math.min(255, targetRGB.b + Math.floor(Math.random()*60)-30))
-    };
-    paletteRGBs.push(close);
-    // 7 random distinct colors
-    while (paletteRGBs.length < 8) {
-      const col = randomColor();
-      // ensure not too close to target ( > 80 ) to make answer obvious
-      if (colorDistance(col, targetRGB) > 80) {
-        let dup = false;
-        for (const existing of paletteRGBs) {
-          if (Math.abs(existing.r-col.r)<5 && Math.abs(existing.g-col.g)<5 && Math.abs(existing.b-col.b)<5) {
-            dup = true; break;
-          }
+    ishCanvas.addEventListener('click',function(e){
+        if(!ishTarget) return;
+        const rect = ishCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const dx = x - ishTarget.x;
+        const dy = y - ishTarget.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist <= ishTarget.r+5){
+            ishiharaFeedback.textContent = '正确！你看到了隐藏的圆形。';
+            ishiharaFeedback.style.color = '#2ecc71';
+            score++;
+            updateScore();
+            ishCanvas.removeEventListener('click',arguments.callee);
+        }else{
+            ishiharaFeedback.textContent = '未找到目标，请再试一次。';
+            ishiharaFeedback.style.color = '#e74c3c';
         }
-        if (!dup) paletteRGBs.push(col);
-      }
-    }
-    // shuffle
-    for (let i = paletteRGBs.length-1; i>0; i--) {
-      const j = Math.floor(Math.random()*(i+1));
-      [paletteRGBs[i], paletteRGBs[j]] = [paletteRGBs[j], paletteRGBs[i]];
-    }
-    // render palette
-    matchPalette.innerHTML = '';
-    paletteRGBs.forEach((col, idx) => {
-      const div = document.createElement('div');
-      div.className = 'grid-item';
-      div.style.backgroundColor = rgbToString(col);
-      div.dataset.index = idx;
-      div.style.cursor = 'pointer';
-      div.style.border = '2px solid #999';
-      div.style.borderRadius = '4px';
-      div.style.width = '50px';
-      div.style.height = '50px';
-      matchPalette.appendChild(div);
     });
-    // attach click listeners
-    matchPalette.querySelectorAll('.grid-item').forEach(item => {
-      item.addEventListener('click', () => {
-        matchPalette.querySelectorAll('.grid-item').forEach(i=>i.style.border='2px solid #999');
-        item.style.border = '2px solid #fff';
-        item.style.boxShadow = '0 0 6px 2px #fff';
-        matchSelectedIdx = parseInt(item.dataset.index,10);
-      });
+    document.getElementById('ishiharaCheck').addEventListener('click',function(){
+        drawIshihara();
+        ishiharaFeedback.textContent = '';
+        ishCanvas.style.cursor = 'crosshair';
     });
-  }
-  let matchSelectedIdx = null;
-  loadMatchTest();
+    drawIshihara();
 
-  matchCheck.addEventListener('click', () => {
-    if (matchSelectedIdx === null) {
-      matchFeedback.textContent = '请先选择一个颜色。';
-      matchFeedback.style.color = 'orange';
-      return;
+    // ---------- 色相排列测试 ----------
+    const hueContainer = document.getElementById('hueContainer');
+    const hueChecks = [];
+    const hueValues = []; // hue degrees
+    function createHueBlocks(){
+        hueContainer.innerHTML = '';
+        hueChecks.length = 0;
+        hueValues.length = 0;
+        const baseHues = [0,45,90,135,180,225,270,315];
+        // shuffle
+        const shuffled = baseHues.slice().sort(()=>Math.random()-0.5);
+        shuffled.forEach((h,i)=>{
+            const rgb = hueToRgb(h);
+            const div = document.createElement('div');
+            div.style.width = '40px';
+            div.style.height = '40px';
+            div.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+            div.style.border = '2px solid #ccc';
+            div.style.cursor = 'move';
+            div.draggable = true;
+            div.dataset.hue = h;
+            div.addEventListener('dragstart',function(e){
+                e.dataTransfer.setData('text/plain', i);
+            });
+            div.addEventListener('dragover',function(e){
+                e.preventDefault();
+            });
+            div.addEventListener('drop',function(e){
+                e.preventDefault();
+                const from = Number(e.dataTransfer.getData('text/plain'));
+                const to = Array.from(hueContainer.children).indexOf(this);
+                if(from===to) return;
+                const moved = hueContainer.children[from];
+                hueContainer.insertBefore(moved, hueContainer.children[to]);
+            });
+            hueContainer.appendChild(div);
+            hueChecks.push(div);
+            hueValues.push(h);
+        });
     }
-    const selected = paletteRGBs[matchSelectedIdx];
-    const dist = colorDistance(selected, targetRGB);
-    // find closest in palette
-    let minDist = 1000;
-    let closestIdx = -1;
-    paletteRGBs.forEach((col, idx) => {
-      const d = colorDistance(col, targetRGB);
-      if (d < minDist) { minDist = d; closestIdx = idx; }
+    document.getElementById('hueCheck').addEventListener('click',function(){
+        const order = Array.from(hueContainer.children).map(el=>Number(el.dataset.hue));
+        const correct = [...hueValues].sort((a,b)=>a-b);
+        let ok = true;
+        for(let i=0;i<order.length;i++){
+            if(order[i]!==correct[i]){
+                ok=false; break;
+            }
+        }
+        if(ok){
+            hueFeedback.textContent = '顺序正确！';
+            hueFeedback.style.color = '#2ecc71';
+            score++;
+            updateScore();
+        }else{
+            hueFeedback.textContent = '顺序错误，请重新排列。';
+            hueFeedback.style.color = '#e74c3c';
+        }
     });
-    if (matchSelectedIdx === closestIdx) {
-      matchFeedback.textContent = '匹配正确！';
-      matchFeedback.style.color = 'green';
-      matchCorrect = true;
-    } else {
-      matchFeedback.textContent = `匹配错误。最接近的是索引 ${closestIdx}。`;
-      matchFeedback.style.color = 'red';
-      matchCorrect = false;
-    }
-  });
+    createHueBlocks();
 
-  // ---------- Finish and Show Result ----------
-  const finishBtn = document.getElementById('finish-test');
-  const resultDiv = document.getElementById('result');
-  const resultText = document.getElementById('result-text');
-
-  finishBtn.addEventListener('click', () => {
-    const score = [ishiharaCorrect, hueCorrect, matchCorrect].filter(Boolean).length;
-    let message, advice;
-    if (score === 3) {
-      message = '您的色觉表现正常。';
-      advice = '继续保持良好的用眼习惯。';
-    } else if (score === 2) {
-      message = '您的色觉表现略有偏弱。';
-      advice = '建议在需要精确色辨别的环境中使用辅助工具或咨询专业眼科医生。';
-    } else {
-      message = '您的色觉表现可能存在异常。';
-      advice = '请尽快进行专业色觉检查，以获得准确评估。';
+    // ---------- 颜色匹配测试 ----------
+    const matchTarget = document.getElementById('matchTarget');
+    const matchOptions = document.getElementById('matchOptions');
+    let targetHue = null;
+    function createMatchTest(){
+        matchOptions.innerHTML = '';
+        targetHue = Math.random()*360;
+        const targetRgb = hueToRgb(targetHue);
+        matchTarget.style.backgroundColor = `rgb(${targetRgb[0]},${targetRgb[1]},${targetRgb[2]})`;
+        // create 6 options, one correct
+        const options = [];
+        for(let i=0;i<5;i++){
+            let h;
+            do{h = Math.random()*360;}while(Math.abs(((h-targetHue+540)%360)-180)<30); // ensure difference >30
+            options.push(h);
+        }
+        options.push(targetHue); // correct
+        options.sort(()=>Math.random()-0.5);
+        options.forEach(h=>{
+            const rgb = hueToRgb(h);
+            const div = document.createElement('div');
+            div.style.width = '50px';
+            div.style.height = '50px';
+            div.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+            div.style.border = '2px solid #999';
+            div.style.cursor = 'pointer';
+            div.dataset.hue = h;
+            div.addEventListener('click',function(){
+                // deselect others
+                Array.from(matchOptions.children).forEach(c=>c.style.border='2px solid #999');
+                this.style.border = '2px solid #3498db';
+            });
+            matchOptions.appendChild(div);
+        });
     }
-    resultText.innerHTML = `<strong>得分：${score}/3</strong><p>${message}</p><p>建议：${advice}</p>`;
-    resultDiv.style.display = 'block';
-  });
+    document.getElementById('matchCheck').addEventListener('click',function(){
+        const selected = Array.from(matchOptions.children).find(el=>el.style.border.includes('3498db'));
+        if(!selected){
+            matchFeedback.textContent = '请先选择一个颜色。';
+            matchFeedback.style.color = '#e74c3c';
+            return;
+        }
+        const chosenHue = Number(selected.dataset.hue);
+        if(Math.abs(((chosenHue-targetHue+540)%360)-180)<5){ // within 5 degrees
+            matchFeedback.textContent = '匹配正确！';
+            matchFeedback.style.color = '#2ecc71';
+            score++;
+            updateScore();
+        }else{
+            matchFeedback.textContent = '颜色不匹配，请重新选择。';
+            matchFeedback.style.color = '#e74c3c';
+        }
+    });
+    createMatchTest();
+
+    // ---------- 结果与分享 ----------
+    function showResult(){
+        let suggestion = '';
+        if(score===3){
+            suggestion = '您的色觉表现正常，能够区分各种颜色差异。';
+        }else if(score===2){
+            suggestion = '您可能有轻度色觉异常，建议在需要精确色辨的场景中使用辅助工具。';
+        }else if(score===1){
+            suggestion = '您可能有中度色觉异常，日常生活中可能会遇到颜色识别困难，建议进行专业色觉检测。';
+        }else{
+            suggestion = '您可能有较严重的色觉异常，建议咨询眼科专业人士进行评估。';
+        }
+        resultText.innerHTML = `<strong>得分：${score}/${maxScore}</strong><p>${suggestion}</p>`;
+        resultSection.style.display = 'block';
+    }
+    // 检查是否全部完成
+    function checkCompletion(){
+        const done = document.querySelectorAll('.container p[style*="color:#2ecc71"]').length === 3;
+        if(done){
+            showResult();
+        }
+    }
+    // 替换反馈颜色检测为完成标志
+    const observers = [
+        {el:document.getElementById('ishiharaFeedback'),prop:'textContent'},
+        {el:document.getElementById('hueFeedback'),prop:'textContent'},
+        {el:document.getElementById('matchFeedback'),prop:'textContent'}
+    ];
+    observers.forEach(o=>{
+        const el = o.el;
+        const init = el.textContent;
+        const mo = new MutationObserver(()=>{
+            if(el.textContent.includes('正确')||el.textContent.includes('顺序正确')||el.textContent.includes('匹配正确')){
+                checkCompletion();
+            }
+        });
+        mo.observe(el,{characterData:true,childList:true,subtree:true});
+    });
+
+    document.getElementById('shareBtn').addEventListener('click',function(){
+        const report = `色觉检测报告\n得分：${score}/${maxScore}\n建议：${resultText.innerText}`;
+        if(navigator.share){
+            navigator.share({title:'色觉检测报告',text:report}).catch(()=>{});
+        }else{
+            navigator.clipboard.writeText(report).then(()=>{
+                alert('报告已复制到剪贴板，可粘贴分享。');
+            }).catch(()=>{
+                alert('复制失败，请手动复制以下内容：\n'+report);
+            });
+        }
+    });
+})();
 </script>
 
+        </div>
     </main>
 <footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
 </html>
